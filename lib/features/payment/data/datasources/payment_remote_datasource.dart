@@ -13,7 +13,8 @@ abstract class PaymentRemoteDatasource {
 
 class PaymentRemoteDatasourceImpl extends PaymentRemoteDatasource {
   final http.Client client;
-  String url = "http://192.168.56.1:3030/payments";
+  // String url = "http://192.168.56.1:3030/payments";
+  String url = "http://10.90.33.185:3030/payments";
 
   PaymentRemoteDatasourceImpl({required this.client});
   @override

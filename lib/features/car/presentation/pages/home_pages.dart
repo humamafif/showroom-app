@@ -48,15 +48,15 @@ class HomePage extends StatelessWidget {
                     Text("Hot deals",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
-                    Text(
-                      "View all...",
-                      style: TextStyle(color: Colors.orange),
-                    )
+                    // Text(
+                    //   "View all...",
+                    //   style: TextStyle(color: Colors.orange),
+                    // )
                   ],
                 ),
               ),
               BlocBuilder<CarBloc, CarState>(
-                bloc: myInjection<CarBloc>()..add(CarEventGetCars()),
+                bloc: serviceLocator<CarBloc>()..add(CarEventGetCars()),
                 builder: (context, state) {
                   if (state is CarStateLoading) {
                     return const Loading();

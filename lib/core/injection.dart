@@ -1,6 +1,13 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
+import 'package:showroom/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:showroom/features/auth/data/repositories/user_repository_impl.dart';
+import 'package:showroom/features/auth/domain/repositories/auth_repo.dart';
+import 'package:showroom/features/auth/domain/usecases/login.dart';
+import 'package:showroom/features/auth/domain/usecases/register.dart';
+import 'package:showroom/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:showroom/features/car/data/datasources/car_local_datasource.dart';
 import 'package:showroom/features/car/data/datasources/car_remote_datasource.dart';
 import 'package:showroom/features/car/data/models/car_model.dart';
@@ -18,7 +25,7 @@ import 'package:showroom/features/payment/domain/usecases/get_payment_by_id.dart
 import 'package:showroom/features/payment/domain/usecases/get_payment_by_type.dart';
 import 'package:showroom/features/payment/presentation/bloc/payment_bloc.dart';
 
-var myInjection = GetIt.instance;
+var serviceLocator = GetIt.instance;
 
 Future<void> init() async {
   //GENERAL Dependencies
@@ -27,68 +34,95 @@ Future<void> init() async {
   Hive.registerAdapter(CarModelAdapter());
   //BOX
   var box = await Hive.openBox("car-box");
-  myInjection.registerLazySingleton(() => box);
+  serviceLocator.registerLazySingleton(() => box);
+  //secure storage
+  serviceLocator.registerLazySingleton(() => const FlutterSecureStorage());
 
   // CLIENT
-  myInjection.registerLazySingleton(() => http.Client());
-  // FEATURE - PROFILE
+  serviceLocator.registerLazySingleton(() => http.Client());
+  // FEATURE - CAR
   // bloc
-  myInjection.registerFactory(() => CarBloc(
-        getAllCar: myInjection(),
-        getCarByName: myInjection(),
-        getcarById: myInjection(),
+  serviceLocator.registerFactory(() => CarBloc(
+        getAllCar: serviceLocator(),
+        getCarByName: serviceLocator(),
+        getcarById: serviceLocator(),
       ));
 
   // use case
-  myInjection.registerLazySingleton(
-    () => GetAllCar(repository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetAllCar(repository: serviceLocator()),
   );
-  myInjection.registerLazySingleton(
-    () => GetCarById(repository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetCarById(repository: serviceLocator()),
   );
-  myInjection.registerLazySingleton(
-    () => GetCarByName(repository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetCarByName(repository: serviceLocator()),
   );
 
   //repository
-  myInjection.registerLazySingleton<CarRepository>(() => CarRepositoryImpl(
-        carRemoteDatasource: myInjection(),
-        carLocalDatasource: myInjection(),
-        box: myInjection(),
+  serviceLocator.registerLazySingleton<CarRepository>(() => CarRepositoryImpl(
+        carRemoteDatasource: serviceLocator(),
+        carLocalDatasource: serviceLocator(),
+        box: serviceLocator(),
       ));
 
   // datasource
-  myInjection.registerLazySingleton<CarLocalDatasource>(
-    () => CarLocalDatasourceImplementation(box: myInjection()),
+  serviceLocator.registerLazySingleton<CarLocalDatasource>(
+    () => CarLocalDatasourceImplementation(box: serviceLocator()),
   );
-  myInjection.registerLazySingleton<CarRemoteDatasource>(
-    () => CarRemoteDatasourceImplementation(client: myInjection()),
+  serviceLocator.registerLazySingleton<CarRemoteDatasource>(
+    () => CarRemoteDatasourceImplementation(client: serviceLocator()),
   );
 
   // FEATURE - PAYMENT
   // bloc
-  myInjection.registerFactory(() => PaymentBloc(
-      getAllPayment: myInjection(),
-      getPaymentById: myInjection(),
-      getPaymentByType: myInjection()));
+  serviceLocator.registerFactory(() => PaymentBloc(
+      getAllPayment: serviceLocator(),
+      getPaymentById: serviceLocator(),
+      getPaymentByType: serviceLocator()));
 
   // use case
-  myInjection.registerLazySingleton(
-    () => GetAllPayment(repository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetAllPayment(repository: serviceLocator()),
   );
-  myInjection.registerLazySingleton(
-    () => GetPaymentById(paymentRepository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetPaymentById(paymentRepository: serviceLocator()),
   );
-  myInjection.registerLazySingleton(
-    () => GetPaymentByType(paymentRepository: myInjection()),
+  serviceLocator.registerLazySingleton(
+    () => GetPaymentByType(paymentRepository: serviceLocator()),
   );
 
   // repository
-  myInjection.registerLazySingleton<PaymentRepository>(
-      () => PaymentRepositoryImpl(paymentRemoteDatasource: myInjection()));
+  serviceLocator.registerLazySingleton<PaymentRepository>(
+      () => PaymentRepositoryImpl(paymentRemoteDatasource: serviceLocator()));
 
   // datasource
-  myInjection.registerLazySingleton<PaymentRemoteDatasource>(
-    () => PaymentRemoteDatasourceImpl(client: myInjection()),
+  serviceLocator.registerLazySingleton<PaymentRemoteDatasource>(
+    () => PaymentRemoteDatasourceImpl(client: serviceLocator()),
+  );
+
+  // FEATURE - AUTH
+  // bloc
+  serviceLocator.registerFactory(() => AuthBloc(
+        login: serviceLocator(),
+        register: serviceLocator(),
+      ));
+
+  // use case
+  serviceLocator.registerLazySingleton(
+    () => Login(repository: serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton(
+    () => Register(repository: serviceLocator()),
+  );
+
+  //repository
+  serviceLocator.registerLazySingleton<AuthRepo>(() => UserRepositoryImpl(
+        authRemoteDatasource: serviceLocator(),
+      ));
+
+  // datasource
+  serviceLocator.registerLazySingleton<AuthRemoteDatasource>(
+    () => AuthRemoteDatasourceImpl(client: serviceLocator()),
   );
 }

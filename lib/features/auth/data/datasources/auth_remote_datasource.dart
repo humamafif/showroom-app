@@ -1,40 +1,48 @@
 import 'dart:convert';
-
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:showroom/core/error/exception.dart';
-
+import 'package:showroom/core/storage/storage.dart';
 import 'package:showroom/features/auth/data/models/user_model.dart';
 import 'package:showroom/features/auth/domain/usecases/login_params.dart';
 import 'package:showroom/features/auth/domain/usecases/register_params.dart';
 
 abstract class AuthRemoteDatasource {
-  Future<UserModel> login(LoginParams loginParams);
-  Future<UserModel> register(RegisterParams registerParams);
+  Future<UserModel> handleLogin(LoginParams loginParams);
+  Future<UserModel> handleRegister(RegisterParams registerParams);
+  Future<UserModel> getUser(String id);
   Future<void> logout();
+  Future<void> saveID(String id);
 }
 
-class AuthRemoteDatasourceImp extends AuthRemoteDatasource {
+class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
   final http.Client client;
-  final FlutterSecureStorage secureStorage;
   String url = "http://192.168.56.1:3030/users";
 
-  AuthRemoteDatasourceImp({required this.client, required this.secureStorage});
+  AuthRemoteDatasourceImpl({required this.client});
   @override
-  Future<UserModel> login(LoginParams loginParams) async {
+  Future<UserModel> handleLogin(LoginParams loginParams) async {
     Uri uri = Uri.parse("$url/login");
+    log("Sending login request to $uri with username: ${loginParams.username}");
     var response = await client.post(
       uri,
+      headers: {'Content-Type': 'application/json'},
       body: json.encode({
         "username": loginParams.username,
         "password": loginParams.password,
       }),
-      headers: {'Content-Type': 'application/json'},
     );
+    log("Login response status: ${response.statusCode}");
+    log("Login response body: ${response.body}");
 
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);
-      await secureStorage.write(key: "token", value: dataBody["token"]);
+      await Storage()
+          .secureStorage
+          .write(key: "token", value: dataBody["token"]);
+
+      await saveID(dataBody['id']);
+
       return UserModel.fromJson(dataBody);
     } else if (response.statusCode == 404) {
       throw EmptyException(message: "User not found");
@@ -44,10 +52,12 @@ class AuthRemoteDatasourceImp extends AuthRemoteDatasource {
   }
 
   @override
-  Future<UserModel> register(RegisterParams registerParams) async {
+  Future<UserModel> handleRegister(RegisterParams registerParams) async {
     Uri uri = Uri.parse("$url/register");
+    log("Sending register request to $uri with username: ${registerParams.username}");
     var response = await client.post(
       uri,
+      headers: {"Content-Type": "application/json"},
       body: json.encode({
         "name": registerParams.name,
         "username": registerParams.username,
@@ -56,8 +66,9 @@ class AuthRemoteDatasourceImp extends AuthRemoteDatasource {
         "address": registerParams.address,
         "password": registerParams.password,
       }),
-      headers: {"Content-Type": "application/json"},
     );
+    log("Register response status: ${response.statusCode}");
+    log("Register response body: ${response.body}");
 
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = json.decode(response.body);
@@ -71,6 +82,32 @@ class AuthRemoteDatasourceImp extends AuthRemoteDatasource {
 
   @override
   Future<void> logout() async {
-    await secureStorage.delete(key: 'token');
+    final token = await Storage().secureStorage.read(key: 'token');
+    log("Deleting token: $token");
+    await Storage().secureStorage.delete(key: 'token');
+  }
+
+  @override
+  Future<UserModel> getUser(String id) async {
+    Uri uri = Uri.parse("$url/$id");
+    var response = await client.get(uri);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> dataBody = jsonDecode(response.body);
+      Map<String, dynamic> data = dataBody['data'];
+      return UserModel.fromJson(data);
+    } else if (response.statusCode == 404) {
+      throw EmptyException(message: "User not found");
+    } else {
+      throw GeneralException(message: "Cannot get data");
+    }
+  }
+
+  @override
+  Future<void> saveID(String id) async {
+    try {
+      await Storage().secureStorage.write(key: 'userID', value: id);
+    } catch (e) {
+      throw GeneralException(message: "Failed to save ID: $e");
+    }
   }
 }

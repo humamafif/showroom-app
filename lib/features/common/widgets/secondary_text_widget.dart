@@ -37,7 +37,7 @@ class SecondaryTextWidget extends StatelessWidget {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  context.pushNamed("home");
+                  context.pushNamed("homepage");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: ShowroomColors.buttonAccentRed,

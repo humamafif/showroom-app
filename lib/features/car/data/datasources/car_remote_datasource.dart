@@ -17,7 +17,8 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
   // CarRemoteDatasourceImplementation();
   @override
   Future<List<CarModel>> getCars() async {
-    Uri url = Uri.parse("http://192.168.56.1:3030/cars");
+    // Uri url = Uri.parse("http://192.168.56.1:3030/cars");
+    Uri url = Uri.parse("http://10.90.33.185:3030/cars");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);
@@ -31,7 +32,8 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
 
   @override
   Future<CarModel> getCarById(int id) async {
-    Uri uri = Uri.parse("http://192.168.56.1:3030/cars/${id.toString()}");
+    // Uri uri = Uri.parse("http://192.168.56.1:3030/cars/${id.toString()}");
+    Uri uri = Uri.parse("http://10.90.33.185:3030/cars/${id.toString()}");
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);
@@ -46,7 +48,8 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
 
   @override
   Future<List<CarModel>> getCarByName(String name) async {
-    Uri uri = Uri.parse("http://192.168.56.1:3030/cars/name/$name");
+    // Uri uri = Uri.parse("http://192.168.56.1:3030/cars/name/$name");
+    Uri uri = Uri.parse("http://10.90.33.185:3030/cars/name/$name");
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);

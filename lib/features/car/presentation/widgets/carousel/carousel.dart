@@ -12,7 +12,7 @@ class CarouselHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CarBloc, CarState>(
-      bloc: myInjection<CarBloc>()..add(CarEventGetCars()),
+      bloc: serviceLocator<CarBloc>()..add(CarEventGetCars()),
       builder: (context, state) {
         if (state is CarStateLoading) {
           return const Loading();
