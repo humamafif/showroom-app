@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:showroom/core/routes/my_router.dart';
 import 'package:showroom/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:showroom/features/car/presentation/bloc/car_bloc.dart';
@@ -15,9 +14,7 @@ void main() async {
   // WidgetsBinding widgetsFlutterBinding =
   //     WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsFlutterBinding);
-  await Hive.initFlutter();
   await init();
-
   Bloc.observer = MyObserver();
   runApp(const MyApp());
 }

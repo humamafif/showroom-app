@@ -1,6 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:http/http.dart' as http;
 import 'package:showroom/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:showroom/features/auth/data/repositories/user_repository_impl.dart';
@@ -8,9 +7,9 @@ import 'package:showroom/features/auth/domain/repositories/auth_repo.dart';
 import 'package:showroom/features/auth/domain/usecases/login.dart';
 import 'package:showroom/features/auth/domain/usecases/register.dart';
 import 'package:showroom/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:showroom/features/car/data/datasources/car_local_datasource.dart';
+
 import 'package:showroom/features/car/data/datasources/car_remote_datasource.dart';
-import 'package:showroom/features/car/data/models/car_model.dart';
+
 import 'package:showroom/features/car/data/repositories/car_repository_impl.dart';
 import 'package:showroom/features/car/domain/repositories/car_repository.dart';
 import 'package:showroom/features/car/domain/usecases/get_all_car.dart';
@@ -29,12 +28,6 @@ var serviceLocator = GetIt.instance;
 
 Future<void> init() async {
   //GENERAL Dependencies
-
-  // HIVE
-  Hive.registerAdapter(CarModelAdapter());
-  //BOX
-  var box = await Hive.openBox("car-box");
-  serviceLocator.registerLazySingleton(() => box);
   //secure storage
   serviceLocator.registerLazySingleton(() => const FlutterSecureStorage());
 
@@ -62,14 +55,10 @@ Future<void> init() async {
   //repository
   serviceLocator.registerLazySingleton<CarRepository>(() => CarRepositoryImpl(
         carRemoteDatasource: serviceLocator(),
-        carLocalDatasource: serviceLocator(),
-        box: serviceLocator(),
       ));
 
   // datasource
-  serviceLocator.registerLazySingleton<CarLocalDatasource>(
-    () => CarLocalDatasourceImplementation(box: serviceLocator()),
-  );
+
   serviceLocator.registerLazySingleton<CarRemoteDatasource>(
     () => CarRemoteDatasourceImplementation(client: serviceLocator()),
   );

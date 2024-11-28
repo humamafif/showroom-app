@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:showroom/core/constant/url.dart';
 import 'package:showroom/core/error/exception.dart';
 import 'package:showroom/features/car/data/models/car_model.dart';
 
@@ -17,8 +18,7 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
   // CarRemoteDatasourceImplementation();
   @override
   Future<List<CarModel>> getCars() async {
-    // Uri url = Uri.parse("http://192.168.56.1:3030/cars");
-    Uri url = Uri.parse("http://10.90.33.185:3030/cars");
+    Uri url = Uri.parse("$BASE_URL/cars");
     var response = await http.get(url);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);
@@ -32,8 +32,7 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
 
   @override
   Future<CarModel> getCarById(int id) async {
-    // Uri uri = Uri.parse("http://192.168.56.1:3030/cars/${id.toString()}");
-    Uri uri = Uri.parse("http://10.90.33.185:3030/cars/${id.toString()}");
+    Uri uri = Uri.parse("$BASE_URL/cars/${id.toString()}");
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);
@@ -48,8 +47,7 @@ class CarRemoteDatasourceImplementation extends CarRemoteDatasource {
 
   @override
   Future<List<CarModel>> getCarByName(String name) async {
-    // Uri uri = Uri.parse("http://192.168.56.1:3030/cars/name/$name");
-    Uri uri = Uri.parse("http://10.90.33.185:3030/cars/name/$name");
+    Uri uri = Uri.parse("$BASE_URL/cars/name/$name");
     var response = await http.get(uri);
     if (response.statusCode == 200) {
       Map<String, dynamic> dataBody = jsonDecode(response.body);

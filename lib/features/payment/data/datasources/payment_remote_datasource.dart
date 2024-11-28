@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:showroom/core/constant/url.dart';
 import 'package:showroom/core/error/exception.dart';
 
 import 'package:showroom/features/payment/data/models/payment_model.dart';
@@ -13,8 +14,7 @@ abstract class PaymentRemoteDatasource {
 
 class PaymentRemoteDatasourceImpl extends PaymentRemoteDatasource {
   final http.Client client;
-  // String url = "http://192.168.56.1:3030/payments";
-  String url = "http://10.90.33.185:3030/payments";
+  String url = "$BASE_URL/payments";
 
   PaymentRemoteDatasourceImpl({required this.client});
   @override

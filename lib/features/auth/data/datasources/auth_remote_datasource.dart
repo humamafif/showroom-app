@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:showroom/core/constant/url.dart';
 import 'package:showroom/core/error/exception.dart';
 import 'package:showroom/core/storage/storage.dart';
 import 'package:showroom/features/auth/data/models/user_model.dart';
@@ -17,7 +18,7 @@ abstract class AuthRemoteDatasource {
 
 class AuthRemoteDatasourceImpl extends AuthRemoteDatasource {
   final http.Client client;
-  String url = "http://192.168.56.1:3030/users";
+  String url = "$BASE_URL/users";
 
   AuthRemoteDatasourceImpl({required this.client});
   @override

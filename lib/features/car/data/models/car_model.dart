@@ -1,8 +1,5 @@
-import 'package:hive/hive.dart';
 import 'package:showroom/features/car/domain/entities/car.dart';
 
-part 'car_model.g.dart';
-@HiveType(typeId: 1)
 class CarModel extends Car {
   const CarModel(
       {required super.id,
