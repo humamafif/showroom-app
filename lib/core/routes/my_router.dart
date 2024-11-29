@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:showroom/features/auth/presentation/pages/login_page.dart';
-import 'package:showroom/features/auth/presentation/pages/profile_page.dart';
+// import 'package:showroom/features/authtest/presentation/pages/login_page.dart';
+// import 'package:showroom/features/authtest/presentation/pages/profile_page.dart';
+// import 'package:showroom/features/auth/presentation/pages/profile_page.dart';
 import 'package:showroom/features/car/presentation/pages/all_car_page.dart';
 import 'package:showroom/features/car/presentation/pages/home_pages.dart';
 import 'package:showroom/features/payment/presentation/pages/order_details_page.dart';
@@ -24,10 +25,9 @@ class MyRouter {
   );
 
   // Profile
-  static final _shellNavigatorProfile = GlobalKey<NavigatorState>(
-    debugLabel: 'Profile',
-  );
-
+  // static final _shellNavigatorProfile = GlobalKey<NavigatorState>(
+  //   debugLabel: 'Profile',
+  // );
   get router => GoRouter(
         navigatorKey: _rootNavigatorKey,
         initialLocation: "/",
@@ -70,19 +70,19 @@ class MyRouter {
                         ),
                       ),
                     ]),
-                StatefulShellBranch(
-                  navigatorKey: _shellNavigatorProfile,
-                  routes: [
-                    GoRoute(
-                      parentNavigatorKey: _shellNavigatorProfile,
-                      path: '/profile',
-                      name: 'profile',
-                      pageBuilder: (context, state) => const NoTransitionPage(
-                        child: ProfilePage(),
-                      ),
-                    )
-                  ],
-                ),
+                // StatefulShellBranch(
+                //   navigatorKey: _shellNavigatorProfile,
+                //   routes: [
+                //     GoRoute(
+                //       parentNavigatorKey: _shellNavigatorProfile,
+                //       path: '/profile',
+                //       name: 'profile',
+                //       pageBuilder: (context, state) => const NoTransitionPage(
+                //         child: ProfilePage(),
+                //       ),
+                //     )
+                //   ],
+                // ),
               ]),
           GoRoute(
             parentNavigatorKey: _rootNavigatorKey,
@@ -97,14 +97,14 @@ class MyRouter {
               );
             },
           ),
-          GoRoute(
-            parentNavigatorKey: _rootNavigatorKey,
-            path: '/login',
-            name: 'login',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: LoginPage(),
-            ),
-          ),
+          // GoRoute(
+          //   parentNavigatorKey: _rootNavigatorKey,
+          //   path: '/login',
+          //   name: 'login',
+          //   pageBuilder: (context, state) => const NoTransitionPage(
+          //     child: LoginPage(),
+          //   ),
+          // ),
         ],
       );
 }

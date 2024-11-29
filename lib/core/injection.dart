@@ -1,12 +1,12 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
-import 'package:showroom/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:showroom/features/auth/data/repositories/user_repository_impl.dart';
-import 'package:showroom/features/auth/domain/repositories/auth_repo.dart';
-import 'package:showroom/features/auth/domain/usecases/login.dart';
-import 'package:showroom/features/auth/domain/usecases/register.dart';
-import 'package:showroom/features/auth/presentation/bloc/auth_bloc.dart';
+// import 'package:showroom/features/authtest/data/datasources/auth_remote_datasource.dart';
+// import 'package:showroom/features/authtest/data/repositories/user_repository_impl.dart';
+// import 'package:showroom/features/authtest/domain/repositories/auth_repo.dart';
+// import 'package:showroom/features/authtest/domain/usecases/login.dart';
+// import 'package:showroom/features/authtest/domain/usecases/register.dart';
+// import 'package:showroom/features/authtest/presentation/bloc/auth_bloc.dart';
 
 import 'package:showroom/features/car/data/datasources/car_remote_datasource.dart';
 
@@ -90,28 +90,28 @@ Future<void> init() async {
     () => PaymentRemoteDatasourceImpl(client: serviceLocator()),
   );
 
-  // FEATURE - AUTH
-  // bloc
-  serviceLocator.registerFactory(() => AuthBloc(
-        login: serviceLocator(),
-        register: serviceLocator(),
-      ));
+  // // FEATURE - AUTH
+  // // bloc
+  // serviceLocator.registerFactory(() => AuthBloc(
+  //       login: serviceLocator(),
+  //       register: serviceLocator(),
+  //     ));
 
-  // use case
-  serviceLocator.registerLazySingleton(
-    () => Login(repository: serviceLocator()),
-  );
-  serviceLocator.registerLazySingleton(
-    () => Register(repository: serviceLocator()),
-  );
+  // // use case
+  // serviceLocator.registerLazySingleton(
+  //   () => Login(repository: serviceLocator()),
+  // );
+  // serviceLocator.registerLazySingleton(
+  //   () => Register(repository: serviceLocator()),
+  // );
 
-  //repository
-  serviceLocator.registerLazySingleton<AuthRepo>(() => UserRepositoryImpl(
-        authRemoteDatasource: serviceLocator(),
-      ));
+  // //repository
+  // serviceLocator.registerLazySingleton<AuthRepo>(() => UserRepositoryImpl(
+  //       authRemoteDatasource: serviceLocator(),
+  //     ));
 
-  // datasource
-  serviceLocator.registerLazySingleton<AuthRemoteDatasource>(
-    () => AuthRemoteDatasourceImpl(client: serviceLocator()),
-  );
+  // // datasource
+  // serviceLocator.registerLazySingleton<AuthRemoteDatasource>(
+  //   () => AuthRemoteDatasourceImpl(client: serviceLocator()),
+  // );
 }

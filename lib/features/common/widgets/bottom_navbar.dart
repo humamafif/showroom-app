@@ -24,9 +24,11 @@ class _BottomNavbarState extends State<BottomNavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: widget.navigationShell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          color: Colors.amber,
           borderRadius: const BorderRadius.all(
             Radius.circular(35),
           ),
