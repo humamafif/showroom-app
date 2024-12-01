@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:showroom/core/routes/my_router.dart';
+import 'package:showroom/features/auth/bloc/auth_bloc.dart';
+import 'package:showroom/features/auth/services/auth_service.dart';
 import 'package:showroom/features/car/presentation/bloc/car_bloc.dart';
 import 'package:showroom/features/payment/presentation/bloc/payment_bloc.dart';
 import 'package:showroom/core/injection.dart';
@@ -50,9 +52,8 @@ class _MyAppState extends State<MyApp> {
           create: (context) =>
               serviceLocator<PaymentBloc>()..add(PaymentEventGetPayments()),
         ),
-        // BlocProvider<AuthBloc>(
-        //   create: (context) => serviceLocator<AuthBloc>()..add((AppStarted())),
-        // )
+        BlocProvider<AuthBloc>(
+            create: (_) => AuthBloc(authService: AuthService()))
       ],
       child: MaterialApp.router(
         theme: ThemeData(textTheme: GoogleFonts.poppinsTextTheme()),
