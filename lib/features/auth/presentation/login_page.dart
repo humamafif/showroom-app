@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showroom/core/constant/color.dart';
 import 'package:showroom/core/routes/my_router.dart';
 import 'package:showroom/features/auth/presentation/profile_page.dart';
 import 'package:showroom/features/auth/presentation/register_page.dart';
+import 'package:showroom/features/common/widgets/blue_line.dart';
+import 'package:showroom/features/common/widgets/divider_custom.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -22,41 +25,108 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+            Text(
+              'Sign In',
+              style: TextStyle(fontSize: 55),
             ),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
+            SizedBox(
+              height: 8,
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                final username = _usernameController.text;
-                final password = _passwordController.text;
+            BlueLineWidget(),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  TextField(
+                    cursorColor: ShowroomColors.accentBlue,
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      labelStyle: TextStyle(color: ShowroomColors.accentBlue),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: ShowroomColors.accentBlue,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    cursorColor: ShowroomColors.accentBlue,
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: ShowroomColors.accentBlue),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: ShowroomColors.accentBlue,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ShowroomColors.accentBlue),
+                      onPressed: () {
+                        final username = _usernameController.text;
+                        final password = _passwordController.text;
 
-                // Mengirimkan AuthLoginEvent ke BLoC
-                context.read<AuthBloc>().add(
-                    AuthLoginEvent(username: username, password: password));
-              },
-              child: Text("Login"),
-            ),
-            TextButton(
-              onPressed: () {
-                // Navigasi ke halaman registrasi
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
-                );
-              },
-              child: Text('Don\'t have an account? Register here'),
+                        // Mengirimkan AuthLoginEvent ke BLoC
+                        context.read<AuthBloc>().add(AuthLoginEvent(
+                            username: username, password: password));
+                      },
+                      child: Text(
+                        "Login",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account yet? "),
+                      TextButton(
+                        onPressed: () {
+                          // Navigasi ke halaman registrasi
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterPage()),
+                          );
+                        },
+                        child: Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             BlocListener<AuthBloc, AuthState>(
               listener: (context, state) {

@@ -126,7 +126,10 @@ class OrderDetailsPage extends StatelessWidget {
                       builder: (context) {
                         Future.delayed(const Duration(seconds: 2), () {
                           context.pop();
-                          context.pushReplacement("/home");
+                          context.pop();
+                          context.pop();
+                          context.pop();
+                          // context.pushReplacement("/");
                         });
 
                         return const AlertSucces();

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:showroom/core/constant/color.dart';
 import 'package:showroom/features/auth/bloc/auth_bloc.dart';
 import 'package:showroom/features/auth/bloc/auth_event.dart';
 import 'package:showroom/features/auth/bloc/auth_state.dart';
 import 'package:showroom/features/auth/presentation/login_page.dart';
+import 'package:showroom/features/common/widgets/blue_line.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -20,7 +22,10 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register')),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoadingState) {
@@ -61,31 +66,78 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         },
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+              Text(
+                'Sign Up',
+                style: TextStyle(fontSize: 55),
               ),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+              SizedBox(
+                height: 8,
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  final username = _usernameController.text;
-                  final password = _passwordController.text;
+              BlueLineWidget(),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  TextField(
+                    cursorColor: ShowroomColors.accentBlue,
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: 'Username',
+                      labelStyle: TextStyle(color: ShowroomColors.accentBlue),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: ShowroomColors.accentBlue,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: ShowroomColors.accentBlue),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: ShowroomColors.accentBlue,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    height: 60,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: ShowroomColors.accentBlue),
+                      onPressed: () {
+                        final username = _usernameController.text;
+                        final password = _passwordController.text;
 
-                  // Trigger event registrasi
-                  context.read<AuthBloc>().add(AuthRegisterEvent(
-                        username: username,
-                        password: password,
-                      ));
-                },
-                child: Text('Register'),
+                        // Trigger event registrasi
+                        context.read<AuthBloc>().add(AuthRegisterEvent(
+                              username: username,
+                              password: password,
+                            ));
+                      },
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
