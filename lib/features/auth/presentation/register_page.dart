@@ -5,7 +5,6 @@ import 'package:showroom/core/constant/color.dart';
 import 'package:showroom/features/auth/bloc/auth_bloc.dart';
 import 'package:showroom/features/auth/bloc/auth_event.dart';
 import 'package:showroom/features/auth/bloc/auth_state.dart';
-import 'package:showroom/features/auth/presentation/login_page.dart';
 import 'package:showroom/features/common/widgets/blue_line.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -29,11 +28,11 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoadingState) {
-            CircularProgressIndicator();
+            const CircularProgressIndicator();
           } else if (state is AuthErrorState) {
             // Jika terjadi error, tampilkan Snackbar error
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message + "error state")),
+              SnackBar(content: Text("${state.message}error state")),
             );
           } else if (state is AuthRegisteredState) {
             // Jika registrasi berhasil, tampilkan Snackbar sukses
@@ -70,23 +69,23 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Sign Up',
                 style: TextStyle(fontSize: 55),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
-              BlueLineWidget(),
+              const BlueLineWidget(),
               Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   TextField(
                     cursorColor: ShowroomColors.accentBlue,
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Username',
                       labelStyle: TextStyle(color: ShowroomColors.accentBlue),
                       focusedBorder: UnderlineInputBorder(
@@ -100,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(color: ShowroomColors.accentBlue),
                       focusedBorder: UnderlineInputBorder(
@@ -111,8 +110,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Container(
+                  const SizedBox(height: 20),
+                  SizedBox(
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
@@ -128,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               password: password,
                             ));
                       },
-                      child: Text(
+                      child: const Text(
                         "Register",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,

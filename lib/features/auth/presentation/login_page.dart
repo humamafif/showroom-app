@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:showroom/core/constant/color.dart';
-import 'package:showroom/core/routes/my_router.dart';
-import 'package:showroom/features/auth/presentation/profile_page.dart';
 import 'package:showroom/features/auth/presentation/register_page.dart';
 import 'package:showroom/features/common/widgets/blue_line.dart';
-import 'package:showroom/features/common/widgets/divider_custom.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
@@ -34,24 +31,24 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Sign In',
               style: TextStyle(fontSize: 55),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            BlueLineWidget(),
+            const BlueLineWidget(),
             Center(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   TextField(
                     cursorColor: ShowroomColors.accentBlue,
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Username',
                       labelStyle: TextStyle(color: ShowroomColors.accentBlue),
                       focusedBorder: UnderlineInputBorder(
@@ -66,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     cursorColor: ShowroomColors.accentBlue,
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(color: ShowroomColors.accentBlue),
                       focusedBorder: UnderlineInputBorder(
@@ -77,8 +74,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Container(
+                  const SizedBox(height: 20),
+                  SizedBox(
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
@@ -92,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                         context.read<AuthBloc>().add(AuthLoginEvent(
                             username: username, password: password));
                       },
-                      child: Text(
+                      child: const Text(
                         "Login",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -104,17 +101,17 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have an account yet? "),
+                      const Text("Don't have an account yet? "),
                       TextButton(
                         onPressed: () {
                           // Navigasi ke halaman registrasi
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => RegisterPage()),
+                                builder: (context) => const RegisterPage()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           "SIGN UP",
                           style: TextStyle(
                             color: Colors.orange,
@@ -150,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Navigator.pushReplacement(context,
                   //     MaterialPageRoute(builder: (context) => ProfilePage()));
                   // Navigator.pop(context);
-                  context.pushReplacement("/profile");
+                  context.go("/profile");
 
                   // Delay sebelum pindah ke halaman lain
                   // Future.delayed(Duration(seconds: 2), () {
