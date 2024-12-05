@@ -19,8 +19,8 @@ class AlertSucces extends StatelessWidget {
             color: Colors.green,
             size: 80,
           ),
-          const SizedBox(height: 10),
-          const Text(
+          SizedBox(height: 10),
+          Text(
             'Successfully Done',
             style: TextStyle(
               fontSize: 18,
