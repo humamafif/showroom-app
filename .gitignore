@@ -44,3 +44,6 @@ app.*.map.json
 
 # API
 lib/core/constant/api.dart
+
+# vscode
+.vscode
