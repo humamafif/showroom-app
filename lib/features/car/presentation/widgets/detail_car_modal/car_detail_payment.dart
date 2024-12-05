@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:showroom/core/constant/color.dart';
+import 'package:showroom/features/auth/bloc/auth_bloc.dart';
+import 'package:showroom/features/auth/bloc/auth_state.dart';
 import 'package:showroom/features/car/domain/entities/car.dart';
 import 'package:showroom/features/payment/presentation/widgets/payment_method_modal.dart';
 
@@ -29,7 +33,23 @@ class PaymentMethodSection extends StatelessWidget {
           fit: FlexFit.loose,
           child: ElevatedButton(
             onPressed: () {
-              showPaymentMethod(context, car);
+              // Mengakses state dari Bloc
+              final authState = context.read<AuthBloc>().state;
+
+              // Memeriksa apakah user sudah terautentikasi
+              if (authState is AuthAuthenticatedState) {
+                showPaymentMethod(context, car);
+              }
+              // Jika user belum terautentikasi, arahkan ke halaman login
+              else {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  context.go("/profile"); // Arahkan ke halaman login
+                });
+              }
+              // Jika state lainnya, berikan log atau penanganan lain
+              // else {
+              //   print("State tidak diketahui atau masih dalam proses.");
+              // }
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.only(left: 10),
