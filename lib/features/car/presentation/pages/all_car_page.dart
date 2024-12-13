@@ -21,9 +21,10 @@ class AllCarPage extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: CustomSearchBar(),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: const CustomSearchBar(),
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -38,13 +39,13 @@ class AllCarPage extends StatelessWidget {
                     } else if (state is CarStateLoadedAllCars) {
                       List<Car> cars = state.cars.toList();
                       return SizedBox(
-                        height: SizeConfig.screenHeight / 1.2,
+                        height: SizeConfig.screenHeight / 1.32,
                         child: buildGridView(cars, cars.length),
                       );
                     } else if (state is CarStateLoadedCarByName) {
                       List<Car> cars = state.cars.toList();
                       return SizedBox(
-                        height: SizeConfig.screenHeight / 1.2,
+                        height: SizeConfig.screenHeight / 4,
                         child: buildGridView(cars, cars.length),
                       );
                     } else {

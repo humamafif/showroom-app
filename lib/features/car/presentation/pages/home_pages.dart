@@ -33,7 +33,8 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
+              Container(
+                margin: EdgeInsets.only(top: 10),
                 padding: EdgeInsets.all(8.0),
                 child: SizedBox(height: 85, child: ListBrand()),
               ),
@@ -42,18 +43,9 @@ class HomePage extends StatelessWidget {
               // Hot Deals Section
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Hot deals",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    // Text(
-                    //   "View all...",
-                    //   style: TextStyle(color: Colors.orange),
-                    // )
-                  ],
-                ),
+                child: Text("Hot deals",
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ),
               BlocBuilder<CarBloc, CarState>(
                 bloc: serviceLocator<CarBloc>()..add(CarEventGetCars()),
@@ -63,9 +55,10 @@ class HomePage extends StatelessWidget {
                   } else if (state is CarStateLoadedAllCars) {
                     List<Car> cars = state.cars.toList();
                     return Container(
-                      height: SizeConfig.screenHeight / 1.5,
+                      // margin: EdgeInsets.only(bottom: 100),
+                      height: SizeConfig.screenHeight / 2,
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: buildGridView(cars, 8),
+                      child: buildGridView(cars, 10),
                     );
                   } else {
                     return const Text("error");
