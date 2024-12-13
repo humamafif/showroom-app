@@ -35,3 +35,15 @@ class AuthUpdateErrorState extends AuthState {
   final String message;
   AuthUpdateErrorState({required this.message});
 }
+
+class AuthDeleteSuccessState extends AuthState {
+  final String message;
+
+  AuthDeleteSuccessState({required this.message});
+}
+
+class AuthDeleteErrorState extends AuthState {
+  final String message;
+
+  AuthDeleteErrorState({required this.message});
+}

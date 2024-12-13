@@ -80,4 +80,24 @@ class AuthService {
       throw Exception('Gagal terhubung ke server: $error');
     }
   }
+
+  Future<bool> deleteUser(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$apiUrl/$id'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        if (responseData['message'] == 'user deleted') {
+          print('Delete Response: $responseData');
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      throw Exception('Gagal terhubung ke server: $error');
+    }
+  }
 }

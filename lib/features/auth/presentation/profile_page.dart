@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:showroom/core/constant/color.dart';
+import 'package:showroom/features/auth/bloc/auth_event.dart';
 import 'package:showroom/features/auth/presentation/update_profile_page.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
@@ -62,13 +63,6 @@ class ProfilePage extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            // Text(
-                            //   'username@gmail.com',
-                            //   style: TextStyle(
-                            //     color: Colors.white,
-                            //     fontSize: 14,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ],
@@ -79,7 +73,6 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(
                 height: 100,
               ),
-              // Text('ID: ${authState.id}'),
               Container(
                 margin: const EdgeInsets.all(16),
                 height: 50,
@@ -123,49 +116,75 @@ class ProfilePage extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ShowroomColors.backgroundLightGray,
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.info,
                           color: Colors.black,
                         ),
-                        Text(
+                        const Text(
                           'Help & Info',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                               color: Colors.black),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward_ios_rounded,
                           color: Colors.black,
-                        )
+                        ),
                       ],
                     )),
+              ),
+              Container(
+                margin: const EdgeInsets.all(16),
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    context
+                        .read<AuthBloc>()
+                        .add(AuthDeleteUserEvent(id: authState.id));
+                    if (authState is AuthDeleteSuccessState) {
+                      context.go('/login');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ShowroomColors.buttonAccentRed,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.delete,
+                        color: Colors.black,
+                      ),
+                      Text(
+                        'Delete User',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: Colors.black,
+                      )
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
         ),
       );
     } else {
-      // return Scaffold(
-      //   appBar: AppBar(title: Text("Profile")),
-      //   body: const Center(child: Text("User not authenticated")),
-      // );
-
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => LoginPage()),
-        // );
         context.go('/login');
       });
       return Scaffold(
         appBar: AppBar(title: const Text("Profile")),
-        body: const Center(
-            child:
-                CircularProgressIndicator()), // Menampilkan loading indicator
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
   }

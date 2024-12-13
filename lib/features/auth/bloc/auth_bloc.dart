@@ -76,5 +76,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
       print("===== UPDATE USER EVENT END =====");
     });
+
+    on<AuthDeleteUserEvent>((event, emit) async {
+      emit(AuthLoadingState());
+      try {
+        final response = await authService.deleteUser(event.id);
+
+        if (response != null) {
+          emit(AuthDeleteSuccessState(message: 'User deleted successfully!'));
+          emit(AuthUnauthenticatedState());
+        } else {
+          emit(AuthDeleteErrorState(message: 'Failed to delete user.'));
+        }
+      } catch (e) {
+        emit(AuthDeleteErrorState(message: 'Delete failed: $e'));
+      }
+    });
   }
 }

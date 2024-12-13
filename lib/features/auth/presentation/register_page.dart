@@ -30,38 +30,15 @@ class _RegisterPageState extends State<RegisterPage> {
           if (state is AuthLoadingState) {
             const CircularProgressIndicator();
           } else if (state is AuthErrorState) {
-            // Jika terjadi error, tampilkan Snackbar error
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("${state.message}error state")),
             );
           } else if (state is AuthRegisteredState) {
-            // Jika registrasi berhasil, tampilkan Snackbar sukses
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.message)),
             );
 
-            // Tampilkan loading indicator
-            // showDialog(
-            //   context: context,
-            //   builder: (_) => AlertDialog(
-            //     content: Row(
-            //       children: [
-            //         CircularProgressIndicator(),
-            //         SizedBox(width: 20),
-            //         Text('Loading...'),
-            //       ],
-            //     ),
-            //   ),
-            // );
             context.pop();
-
-            // Delay sebelum pindah ke halaman lain
-            // Future.delayed(Duration(seconds: 2), () {
-            //   Navigator.pop(context); // Tutup loading indicator
-            //   // Navigator.pop(context);
-            //   // Navigator.pushReplacement(context,
-            //   //     MaterialPageRoute(builder: (context) => LoginPage()));
-            // });
           }
         },
         child: Padding(
@@ -121,7 +98,6 @@ class _RegisterPageState extends State<RegisterPage> {
                         final username = _usernameController.text;
                         final password = _passwordController.text;
 
-                        // Trigger event registrasi
                         context.read<AuthBloc>().add(AuthRegisterEvent(
                               username: username,
                               password: password,

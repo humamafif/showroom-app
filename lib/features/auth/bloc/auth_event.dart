@@ -22,3 +22,11 @@ class AuthUpdateUserEvent extends AuthEvent {
 
   AuthUpdateUserEvent({required this.newUsername, required this.id});
 }
+
+
+// DELETE
+class AuthDeleteUserEvent extends AuthEvent {
+  final String id;
+
+  AuthDeleteUserEvent({required this.id});
+}

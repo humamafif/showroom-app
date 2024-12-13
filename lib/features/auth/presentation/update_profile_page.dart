@@ -82,14 +82,14 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                       onPressed: () {
                         final newUsername = _usernameController.text;
                         if (newUsername.isNotEmpty) {
-                          // Trigger event untuk update username
                           context.read<AuthBloc>().add(
                                 AuthUpdateUserEvent(
                                     id: state.id, newUsername: newUsername),
                               );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Username cannot be empty')),
+                            const SnackBar(
+                                content: Text('Username cannot be empty')),
                           );
                         }
                       },
@@ -113,28 +113,8 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
           if (state is AuthLoadingState) {
             print(state);
           } else if (state is AuthUpdateSuccessState) {
-            // showDialog(
-            //   context: context,
-            //   builder: (_) => AlertDialog(
-            //     content: Row(
-            //       children: [
-            //         CircularProgressIndicator(),
-            //         SizedBox(width: 20),
-            //         Text('Loading...'),
-            //       ],
-            //     ),
-            //   ),
-            // );
-            // Delay sebelum pindah ke halaman lain
             Navigator.pop(context);
-            // context.pop();
-            // Navigator.pop(context);
-            // Future.delayed(Duration(seconds: 2), () {
-            //   Navigator.pop(context);
-            //   Navigator.pop(context);
-            // });
 
-            // Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Username updated successfully!')),
             );
